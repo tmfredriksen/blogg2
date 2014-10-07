@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Blogg.Models.Post>
+
+@{
+    ViewBag.Title = "Innlegg";
+}
+
+<h2>Liste</h2>
+
+<p>
+    @Html.ActionLink("Opprett nytt innlegg", "Create", new { id = ViewBag.parentID})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Blog.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Blog.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Text)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author)
+        </td>
+        <td>
+            @Html.ActionLink("Se innlegg", "CommentIndex","Comment", new { id = item.ID }, null) |
+            @Html.ActionLink("Rediger", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Slett", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>
+
+<div>
+    @Html.ActionLink("Gå tilbake", "Index")
+</div>

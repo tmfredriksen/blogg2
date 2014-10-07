@@ -1,0 +1,84 @@
+﻿@model Blogg.Models.PostCommentViewModels
+
+@{
+    ViewBag.Title = "CommentIndex";
+}
+
+<h2>CommentIndex</h2>
+
+<div>
+    <h4>Post</h4>
+    <hr />
+    <dl class="dl-horizontal">
+  
+        <dt>
+            @Html.DisplayNameFor(model => model.post.title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.Text)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.Text)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.post.Author)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.post.Author)
+        </dd>
+
+        @if (Model.post.CommentsAllowed)
+        {
+            @Html.ActionLink("Kommenter", "Create", new { id = ViewBag.commentParentID })
+        }
+        else
+        {
+            <h2>Dette innlegget kan ikke kommenteres.</h2>
+        }
+
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Tittel")
+
+                </th>
+
+                <th>
+                    @Html.DisplayName("Kommentar")
+
+                </th>
+                
+            </tr>
+
+
+            @foreach (var item in Model.post.Comments)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Text)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Slett", "Delete", new { id = item.ID })
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index", "Blog")
+</p>

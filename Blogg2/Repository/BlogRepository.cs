@@ -221,14 +221,16 @@ namespace Blogg.Repository
         #endregion
 
         #region user
-/*
+
         public User GetUser(string username)
         {
-          //  return db.User.Find(username);
-
+            return db.Users.Find(username);
         }
-        */
-
+        
+        public User GetUserPW(string pw)
+        {
+            return db.Users.Find(pw);
+        }
         #endregion
 
     }

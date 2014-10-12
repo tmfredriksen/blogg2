@@ -1,8 +1,9 @@
 namespace Blogg.Models
 {
-    using System;
-    using System.Data.Entity;
-    using System.Linq;
+    using Blogg2.Models;
+using System;
+using System.Data.Entity;
+using System.Linq;
 
     public class DatabaseModel : DbContext
     {
@@ -23,6 +24,7 @@ namespace Blogg.Models
          public virtual DbSet<Blog> Blogs { get; set; }
          public virtual DbSet<Post> Posts { get; set; }
          public virtual DbSet<Comment> Comments { get; set; }
+         public virtual DbSet<User> Users { get; set; }
 
 
     }

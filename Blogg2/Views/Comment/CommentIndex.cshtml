@@ -37,48 +37,144 @@
 
         @if (Model.post.CommentsAllowed)
         {
-            @Html.ActionLink("Kommenter", "Create", new { id = ViewBag.commentParentID })
-        }
-        else
-        {
-            <h2>Dette innlegget kan ikke kommenteres.</h2>
-        }
-
-
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayName("Tittel")
-
-                </th>
-
-                <th>
-                    @Html.DisplayName("Kommentar")
-
-                </th>
-                
-            </tr>
-
-
-            @foreach (var item in Model.post.Comments)
+            @*
+               @Html.ActionLink("Kommenter", "Create", new { id = ViewBag.commentParentID }) *@
+            }
+            else
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Text)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Slett", "Delete", new { id = item.ID })
-
-                    </td>
-                </tr>
+                <h2>Dette innlegget kan ikke kommenteres.</h2>
             }
 
-        </table>
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Back to List", "Index", "Blog")
-</p>
+
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayName("Tittel")
+
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("Kommentar")
+
+                    </th>
+
+                </tr>
+
+
+                @foreach (var item in Model.post.Comments)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Text)
+                        </td>
+                        <td>
+
+
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Slett" class="btn btn-default" name="delete" id="delete" />
+                            </div>
+
+                            <input type="hidden" value="@item.ID"   name="deleteComment" id="commentID" />
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </dl>
+    </div>
+
+    <textarea id="tittel" rows="1" cols="25"></textarea><br /><br />
+    <textarea id="id" rows="3" cols="50"></textarea>
+    <script type="text/javascript" src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+
+
+            var url = document.URL.split('/');
+            var id = url.pop();
+
+
+            $(document).ready(function () {
+
+                $('#delete').click(function () {
+
+                    var comID = $('#commentID').val();
+                    $.ajax(
+                    {
+                        type: "DELETE",
+                        url: "/api/CommentsApi/" + comID,
+                        data: JSON.stringify(id),
+                        contentType: "application/json;charset=utf-8",
+                        dataType: 'json',
+                        success: function (result) {
+                            $("#update").html("<p>Done..." + "</p>");
+                            location.reload();
+
+                        },
+                        error: function (req, status, error) {
+                            $("#update").html("An error occured in AJAX code");
+                        }
+                    });
+
+                });
+
+                $('#submit').click(function () {
+
+                    Comment = {
+                        "Title": document.getElementById("tittel").value ,
+                        "Text": document.getElementById("id").value,
+                        "PostID": id };
+
+
+                    $.ajax(
+                    {
+                        type: "POST",
+                        url: "/api/CommentsApi",
+                        data: JSON.stringify(Comment),
+                        contentType: "application/json;charset=utf-8",
+                        dataType: 'json',
+                        success: function (result) {
+                            $("#update").html("<p>Done..." + "</p>");
+                            location.reload();
+                        },
+                        error: function (req, status, error) {
+                            $("#update").html("An error occured in AJAX code");
+                        }
+                    });
+
+                });
+
+
+
+
+            });
+
+
+    </script>
+
+
+
+
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Post Comment" class="btn btn-default" name="submit" id="submit" />
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <p>
+        @Html.ActionLink("Back to List", "Index", "Blog")
+    </p>
